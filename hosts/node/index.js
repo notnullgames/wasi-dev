@@ -20,10 +20,12 @@ const wasi = new WASI({
 const importObject = {
   wasi_snapshot_preview1: wasi.wasiImport,
   wasidev: {
-    image_to_buffer(image_to_fd){},
-    sound_to_buffer(sound_to_fd){}
+    image_to_fd(fnamePtr){},
+    sound_to_fd(fnamePtr){},
+    http_get_to_fd(fnamePtr){}
   }
 }
+
 
 const wasm = await WebAssembly.compile(await readFile(wasmFile))
 const instance = await WebAssembly.instantiate(wasm, importObject)
