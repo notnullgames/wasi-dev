@@ -1,0 +1,24 @@
+{
+  "name": "@wasi-dev/host",
+  "version": "0.0.1",
+  "description": "A nodejs-based host for wasi-dev ",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "wasidev": "index.js"
+  },
+  "keywords": [
+    "was",
+    "wasm",
+    "framebuffer",
+    "sound",
+    "input"
+  ],
+  "author": "David Konsumer <konsumer@jetboystudio.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@wasmer/io-devices": "^0.12.0",
+    "@wasmer/sdk": "^0.6.0",
+    "@wasmer/wasmfs": "^0.12.0"
+  }
+}
