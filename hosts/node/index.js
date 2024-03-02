@@ -1,13 +1,33 @@
-import { WasmFs } from '@wasmer/wasmfs'
-import { IoDevices } from '@wasmer/io-devices'
+import fs from "node:fs"
+import { readFile } from "node:fs/promises"
+import { basename } from 'node:path'
+import { WASI }  from "node:wasi"
 
-const wasmFs = new WasmFs()
-const ioDevices = new IoDevices(wasmFs)
+const [,cliName, wasmFile] = process.argv
 
-// todo: add this stuff https://medium.com/wasmer/wasmer-js-9a53e837b80
+if (!wasmFile) {
+  console.error(`Usage: ${basename(cliName)} <WASM_FILE>`)
+  process.exit(1)
+}
 
-ioDevices.setBufferIndexDisplayCallback(() => {
-  console.log(ioDevices.getFrameBuffer())
+// this builds the unfettered WASI, but I will replace with my own
+const wasi = new WASI({
+  version: 'preview1',
+  args: [],
+  env: {}
 })
 
-wasmFs.fs.writeFileSync('/_wasmer/dev/fb0/draw', '0')
+const importObject = {
+  wasi_snapshot_preview1: wasi.wasiImport,
+  wasidev: {
+    image_to_buffer(image_to_fd){},
+    sound_to_buffer(sound_to_fd){}
+  }
+}
+
+const wasm = await WebAssembly.compile(await readFile(wasmFile))
+const instance = await WebAssembly.instantiate(wasm, importObject)
+
+wasi.start(instance)
+
+

@@ -17,8 +17,6 @@
   "author": "David Konsumer <konsumer@jetboystudio.com>",
   "license": "MIT",
   "dependencies": {
-    "@wasmer/io-devices": "^0.12.0",
-    "@wasmer/sdk": "^0.6.0",
-    "@wasmer/wasmfs": "^0.12.0"
+    "wasi-js": "^1.7.3"
   }
 }
